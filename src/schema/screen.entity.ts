@@ -17,8 +17,8 @@ export class Screen {
   @Column()
   identifier: string;
 
-  @Column({ type: 'simple-array' })
-  reservedSeats: number[];
+  @Column()
+  numberOfSeats: number;
 
   @ManyToOne(() => Cinema, (cinema) => cinema.screens, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'id' })

@@ -1,0 +1,37 @@
+services:
+  backend:
+    build:
+      context: .
+      args:
+        - NODE_ENV=test
+    restart: always
+    ports:
+      - "3000:3000"
+      - "8080:8080"
+    env_file:
+      - ./.env.test
+    environment:
+      - MYSQL_HOST=host.docker.internal
+      - MYSQL_DATABASE=test-DB
+      - MYSQL_ROOT_PASSWORD=test-password
+      - REDIS_URL=redis://default@host.docker.internal:6379
+      - REDIS_HOST=host.docker.internal
+    depends_on:
+      - test-db
+      - test-redis
+    command: >
+      sh -c "npm run start:dev"
+
+  database:
+    image: mysql:latest
+    restart: always
+    ports:
+      - "3306:3306"
+    env_file:
+      - ./.env
+
+  test-redis:
+    image: redis:latest
+    restart: always
+    ports:
+      - "6379:6379"

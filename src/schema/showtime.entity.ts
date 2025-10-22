@@ -18,6 +18,12 @@ export class Showtime {
   @Column({ type: 'datetime' })
   time: Date;
 
+  @Column({ type: 'simple-array' })
+  reservedSeats: number[];
+
+  @Column({ default: false })
+  soldOut: boolean;
+
   @ManyToOne(() => Screen, (screen) => screen.showtimes, {
     onDelete: 'CASCADE',
   })
