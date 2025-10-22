@@ -1,0 +1,45 @@
+services:
+  backend:
+    build:
+      context: .  
+    restart: always
+    ports:
+      - "3000:3000"
+    networks:
+      - backend-network
+    env_file:
+      - ./.env
+    depends_on:
+      - database
+      - redis
+
+  database:
+    image: mysql:latest
+    restart: always
+    ports:
+      - "3306:3306"
+    env_file:
+      - ./.env
+    networks:
+      - backend-network
+    volumes:
+      - db-data:/var/lib/mysql
+  
+  redis:
+    image: redis:latest
+    restart: always
+    ports:
+      - "6379:6379"
+    networks:
+      - backend-network
+    volumes:
+      - redis-data:/data
+    command: >
+      /bin/sh -c "redis-server --requirepass ${REDIS_PASSWORD}"
+
+volumes:
+  db-data:
+  redis-data:
+
+networks:
+  backend-network:
