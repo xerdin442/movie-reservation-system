@@ -1,5 +1,5 @@
 import { createParamDecorator, ExecutionContext } from '@nestjs/common';
-import { Cinema } from '@src/cinema/entities/cinema.entity';
+import { Cinema } from '@src/schema/cinema.entity';
 import { Request } from 'express';
 
 export const GetCinema = createParamDecorator(

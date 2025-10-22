@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { CreateCinemaDto, UpdateCinemaDto } from './dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { Cinema } from './entities/cinema.entity';
+import { Cinema } from '../schema/cinema.entity';
 
 @Injectable()
 export class CinemaService {

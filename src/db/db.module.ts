@@ -1,7 +1,8 @@
-import { Module } from '@nestjs/common';
+import { Global, Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Secrets } from '@src/common/secrets';
 
+@Global()
 @Module({
   imports: [
     TypeOrmModule.forRootAsync({

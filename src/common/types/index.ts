@@ -1,14 +1,3 @@
-export enum SubscriptionStatus {
-  ACTIVE = 'active',
-  EXPIRED = 'expired',
-}
-
-export enum SubscriptionTier {
-  FREE = 'free',
-  BASIC = 'basic',
-  PREMIUM = 'premium',
-}
-
 export type SessionData = {
   email?: string;
   otp?: string;
