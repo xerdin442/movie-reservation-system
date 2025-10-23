@@ -3,6 +3,7 @@ import { CreateCinemaDto, UpdateCinemaDto } from './dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Cinema } from '../schema/cinema.entity';
+import { randomUUID } from 'crypto';
 
 @Injectable()
 export class CinemaService {
@@ -12,7 +13,10 @@ export class CinemaService {
   ) {}
 
   create(dto: CreateCinemaDto) {
-    return 'This action adds a new cinema';
+    try {
+    } catch (error) {
+      throw error;
+    }
   }
 
   findAll() {
@@ -27,7 +31,7 @@ export class CinemaService {
     return `This action updates a #${id} cinema`;
   }
 
-  remove(id: number) {
+  delete(id: number) {
     return `This action removes a #${id} cinema`;
   }
 }

@@ -1,9 +1,17 @@
 import { SubscriptionStatus, SubscriptionTier } from '@src/common/enums';
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  OneToMany,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 import { Movie } from './movie.entity';
 import { Screen } from './screen.entity';
 import { Staff } from './staff.entity';
 import { Membership } from './membership.entity';
+import { Organization } from './organization.entity';
 
 @Entity()
 export class Cinema {
@@ -14,13 +22,16 @@ export class Cinema {
   name: string;
 
   @Column()
+  location: string;
+
+  @Column()
   apiKey: string;
 
   @Column()
-  acctNumber: string;
+  accountNumber: string;
 
   @Column()
-  acctName: string;
+  accountName: string;
 
   @Column()
   bankName: string;
@@ -54,6 +65,12 @@ export class Cinema {
 
   @OneToMany(() => Membership, (membership) => membership.cinema)
   memberships: Membership[];
+
+  @ManyToOne(() => Organization, (organization) => organization.cinemas, {
+    onDelete: 'CASCADE',
+  })
+  @JoinColumn({ name: 'id' })
+  organization: Organization;
 
   constructor(cinema: Partial<Cinema>) {
     Object.assign(this, cinema);

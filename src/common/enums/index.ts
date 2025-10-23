@@ -38,7 +38,6 @@ export enum MovieStatus {
 }
 
 export enum StaffRole {
-  EXECUTIVE = 'executive',
   MANAGER = 'manager',
   MEMBER = 'member',
 }

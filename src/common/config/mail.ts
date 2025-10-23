@@ -9,8 +9,6 @@ export const sendEmail = async (
   content: string,
   attachments?: Attachment[],
 ): Promise<void> => {
-  const context: string = sendEmail.name;
-
   // Generate HTML from email content
   const $ = cheerio.load(content);
   const htmlContent = $.html();
@@ -29,14 +27,14 @@ export const sendEmail = async (
 
   if (response.data) {
     logger.info(
-      `[${context}] "${subject}" email sent successfully to ${receiver}.\n`,
+      `[Mail Service] "${subject}" email sent successfully to ${receiver}.\n`,
     );
     return;
   }
 
   if (response.error) {
     logger.error(
-      `[${context}] An error occured while sending "${subject}" email to ${receiver}. Error: ${response.error.message}\n`,
+      `[Mail Service] An error occured while sending "${subject}" email to ${receiver}. Error: ${response.error.message}\n`,
     );
     return;
   }

@@ -1,15 +1,23 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  ParseIntPipe,
+} from '@nestjs/common';
 import { CinemaService } from './cinema.service';
-import { CreateCinemaDto } from './dto/create-cinema.dto';
-import { UpdateCinemaDto } from './dto/update-cinema.dto';
+import { CreateCinemaDto, UpdateCinemaDto } from './dto';
 
 @Controller('cinema')
 export class CinemaController {
   constructor(private readonly cinemaService: CinemaService) {}
 
-  @Post()
-  create(@Body() createCinemaDto: CreateCinemaDto) {
-    return this.cinemaService.create(createCinemaDto);
+  @Post('profile/create')
+  create(@Body() dto: CreateCinemaDto) {
+    return this.cinemaService.create(dto);
   }
 
   @Get()
@@ -17,18 +25,21 @@ export class CinemaController {
     return this.cinemaService.findAll();
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.cinemaService.findOne(+id);
+  @Get('profile/:cinemaId')
+  findOne(@Param('cinemaId', ParseIntPipe) cinemaId: string) {
+    return this.cinemaService.findOne(+cinemaId);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateCinemaDto: UpdateCinemaDto) {
-    return this.cinemaService.update(+id, updateCinemaDto);
+  @Patch('profile/:cinemaId')
+  update(
+    @Param('cinemaId', ParseIntPipe) cinemaId: string,
+    @Body() dto: UpdateCinemaDto,
+  ) {
+    return this.cinemaService.update(+cinemaId, dto);
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.cinemaService.remove(+id);
+  @Delete('profile/:cinemaId')
+  remove(@Param('cinemaId', ParseIntPipe) cinemaId: string) {
+    return this.cinemaService.delete(+cinemaId);
   }
 }

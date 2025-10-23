@@ -4,7 +4,7 @@ import { Response } from 'express';
 @Controller()
 export class AppController {
   @Get('health')
-  check(@Res() res: Response) {
+  healthCheck(@Res() res: Response) {
     return res.status(HttpStatus.OK).send('Service is healthy!');
   }
 }

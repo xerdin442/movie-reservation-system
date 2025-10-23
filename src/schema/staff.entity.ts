@@ -19,8 +19,8 @@ export class Staff {
   @Column()
   email: string;
 
-  @Column()
-  mfASecret: string;
+  @Column({ select: false })
+  password: string;
 
   @Column({ type: 'enum', enum: StaffRole })
   role: StaffRole;

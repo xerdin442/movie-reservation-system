@@ -8,6 +8,9 @@ import { Secrets } from './common/secrets';
 import { DbModule } from './db/db.module';
 import { CinemaModule } from './cinema/cinema.module';
 import { MovieModule } from './movie/movie.module';
+import { StaffModule } from './staff/staff.module';
+import { OrganizationModule } from './organization/organization.module';
+import { PaymentsModule } from './payments/payments.module';
 
 @Module({
   imports: [
@@ -36,6 +39,9 @@ import { MovieModule } from './movie/movie.module';
     DbModule,
     CinemaModule,
     MovieModule,
+    StaffModule,
+    OrganizationModule,
+    PaymentsModule,
   ],
   controllers: [AppController],
   providers: [
