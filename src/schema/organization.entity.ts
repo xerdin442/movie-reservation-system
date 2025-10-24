@@ -1,5 +1,6 @@
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
 import { Cinema } from './cinema.entity';
+import { SubscriptionStatus, SubscriptionTier } from '@src/common/enums';
 
 @Entity()
 export class Organization {
@@ -9,11 +10,17 @@ export class Organization {
   @Column()
   name: string;
 
-  @Column()
+  @Column({ unique: true })
   email: string;
 
-  @Column()
+  @Column({ select: false })
   mfASecret: string;
+
+  @Column({ type: 'enum', enum: SubscriptionStatus })
+  subscriptionStatus: SubscriptionStatus;
+
+  @Column({ type: 'enum', enum: SubscriptionTier })
+  subscriptionTier: SubscriptionTier;
 
   @OneToMany(() => Cinema, (cinema) => cinema.organization)
   cinemas: Cinema[];

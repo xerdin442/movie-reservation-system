@@ -1,14 +1,15 @@
 import { createParamDecorator, ExecutionContext } from '@nestjs/common';
-import { Cinema } from '@src/schema/cinema.entity';
+import { JwtValidatedPayload } from '@src/common/types';
 import { Request } from 'express';
 
-export const GetCinema = createParamDecorator(
-  (data: unknown, ctx: ExecutionContext) => {
-    const request = ctx.switchToHttp().getRequest<Request>() as Record<
-      string,
-      any
-    >;
+interface AuthenticatedRequest extends Request {
+  user: JwtValidatedPayload;
+}
 
-    return request.user as Cinema;
+export const CurrentUser = createParamDecorator(
+  (data: unknown, ctx: ExecutionContext) => {
+    const request = ctx.switchToHttp().getRequest<AuthenticatedRequest>();
+
+    return request.user;
   },
 );

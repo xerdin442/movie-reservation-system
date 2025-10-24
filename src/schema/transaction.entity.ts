@@ -13,7 +13,7 @@ export class Transaction {
   @Column()
   amount: number;
 
-  @Column({ nullable: true })
+  @Column({ nullable: true, unique: true })
   txIdentifier: string;
 
   @Column()

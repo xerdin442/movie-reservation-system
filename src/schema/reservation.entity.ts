@@ -16,7 +16,7 @@ export class Reservation {
   @Column()
   email: string;
 
-  @Column()
+  @Column({ unique: true })
   accessKey: string;
 
   @Column()

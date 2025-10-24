@@ -18,7 +18,7 @@ export class OrganizationProcessor {
     const redis: RedisClientType = await connectToRedis(
       Secrets.REDIS_URL,
       'Signup Verification',
-      Secrets.VERIFICATION_CODE_STORE_INDEX,
+      Secrets.AUTH_VERIFICATION_STORE_INDEX,
     );
 
     try {

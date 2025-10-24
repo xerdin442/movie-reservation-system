@@ -4,6 +4,13 @@ export type SessionData = {
   otpExpiration?: number;
 };
 
+export type AuthRole = 'organization' | 'staff' | 'admin';
+
+export interface JwtValidatedPayload {
+  id: number;
+  role: AuthRole;
+}
+
 export type SocialAuthUser = {
   // user?: User;
   token: string;

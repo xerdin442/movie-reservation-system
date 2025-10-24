@@ -14,7 +14,7 @@ export class Screen {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column()
+  @Column({ unique: true })
   identifier: string;
 
   @Column()

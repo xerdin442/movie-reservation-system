@@ -1,4 +1,3 @@
-import { SubscriptionStatus, SubscriptionTier } from '@src/common/enums';
 import {
   Column,
   Entity,
@@ -22,9 +21,6 @@ export class Cinema {
   name: string;
 
   @Column()
-  location: string;
-
-  @Column()
   apiKey: string;
 
   @Column()
@@ -41,12 +37,6 @@ export class Cinema {
 
   @Column({ type: 'simple-array' })
   membershipPlans: string[];
-
-  @Column({ type: 'enum', enum: SubscriptionStatus })
-  subscriptionStatus: SubscriptionStatus;
-
-  @Column({ type: 'enum', enum: SubscriptionTier })
-  subscriptionTier: SubscriptionTier;
 
   @Column({ default: false })
   allowMembership: boolean;

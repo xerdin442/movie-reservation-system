@@ -4,12 +4,14 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Cinema } from '../schema/cinema.entity';
 import { randomUUID } from 'crypto';
+import { PaymentsService } from '@src/payments/payments.service';
 
 @Injectable()
 export class CinemaService {
   constructor(
     @InjectRepository(Cinema)
     private readonly cinemaRepository: Repository<Cinema>,
+    private readonly paymentsService: PaymentsService,
   ) {}
 
   create(dto: CreateCinemaDto) {

@@ -11,6 +11,7 @@ import { MovieModule } from './movie/movie.module';
 import { StaffModule } from './staff/staff.module';
 import { OrganizationModule } from './organization/organization.module';
 import { PaymentsModule } from './payments/payments.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -42,6 +43,7 @@ import { PaymentsModule } from './payments/payments.module';
     StaffModule,
     OrganizationModule,
     PaymentsModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [
