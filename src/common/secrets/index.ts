@@ -29,4 +29,5 @@ export const Secrets = {
   APP_EMAIL: process.env.APP_EMAIL!,
   RATE_LIMIT_PER_SECOND: Number(process.env.RATE_LIMIT_PER_SECOND),
   RATE_LIMIT_PER_MINUTE: Number(process.env.RATE_LIMIT_PER_MINUTE),
+  PAYSTACK_SECRET_KEY: process.env.PAYSTACK_SECRET_KEY!,
 };
