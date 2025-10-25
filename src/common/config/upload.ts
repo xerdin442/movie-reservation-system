@@ -19,7 +19,7 @@ class UploadConfig {
     });
   }
 
-  storage(
+  createStorageInstance(
     folder: string,
     resource_type: 'image' | 'raw' | 'video' | 'auto',
   ): CloudinaryStorage {

@@ -12,6 +12,8 @@ import { StaffModule } from './staff/staff.module';
 import { OrganizationModule } from './organization/organization.module';
 import { PaymentsModule } from './payments/payments.module';
 import { AuthModule } from './auth/auth.module';
+import { SubscriptionModule } from './subscription/subscription.module';
+import { RolesGuard } from './custom/guards';
 
 @Module({
   imports: [
@@ -44,12 +46,17 @@ import { AuthModule } from './auth/auth.module';
     OrganizationModule,
     PaymentsModule,
     AuthModule,
+    SubscriptionModule,
   ],
   controllers: [AppController],
   providers: [
     {
       provide: APP_GUARD,
       useClass: ThrottlerGuard,
+    },
+    {
+      provide: APP_GUARD,
+      useClass: RolesGuard,
     },
   ],
 })

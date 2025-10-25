@@ -7,6 +7,7 @@ export enum SubscriptionTier {
   FREE = 'free',
   BASIC = 'basic',
   PREMIUM = 'premium',
+  ENTERPRISE = 'enterprise',
 }
 
 export enum MovieGenre {

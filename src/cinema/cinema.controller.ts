@@ -7,17 +7,25 @@ import {
   Param,
   Delete,
   ParseIntPipe,
+  UseGuards,
 } from '@nestjs/common';
 import { CinemaService } from './cinema.service';
 import { CreateCinemaDto, UpdateCinemaDto } from './dto';
+import { CurrentUser, Roles } from '@src/custom/decorators';
+import { AuthGuard } from '@nestjs/passport';
 
+@UseGuards(AuthGuard('jwt'))
 @Controller('cinema')
 export class CinemaController {
   constructor(private readonly cinemaService: CinemaService) {}
 
+  @Roles('organization')
   @Post('profile/create')
-  create(@Body() dto: CreateCinemaDto) {
-    return this.cinemaService.create(dto);
+  create(
+    @CurrentUser('id') organizationId: number,
+    @Body() dto: CreateCinemaDto,
+  ) {
+    return this.cinemaService.create(organizationId, dto);
   }
 
   @Get()

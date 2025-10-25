@@ -65,6 +65,7 @@ export class OrganizationService {
       // Create new organization
       const organization = this.organizationRepository.create({
         ...details,
+        apiKey: 'mrs_' + randomUUID(),
         mfASecret: secret.base32,
         subscriptionTier: SubscriptionTier.FREE,
         subscriptionStatus: SubscriptionStatus.ACTIVE,
@@ -104,7 +105,7 @@ export class OrganizationService {
       }
 
       // Generate and store request ID to verify login request
-      const requestId = randomUUID().split('-').slice(1, 4).join('-');
+      const requestId = 'REQ-' + randomUUID().split('-').slice(1, 4).join('-');
       await redis.setEx(requestId, 600, dto.email);
 
       return requestId;
@@ -151,11 +152,9 @@ export class OrganizationService {
 
       // Create and sign JWT payload
       const payload = { sub: organization.id, role: 'organization' };
+      const token = await this.jwtService.signAsync(payload);
 
-      return {
-        email,
-        token: await this.jwtService.signAsync(payload),
-      };
+      return { email, token };
     } catch (error) {
       throw error;
     } finally {

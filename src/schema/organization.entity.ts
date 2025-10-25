@@ -1,6 +1,13 @@
-import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  OneToMany,
+  OneToOne,
+} from 'typeorm';
 import { Cinema } from './cinema.entity';
 import { SubscriptionStatus, SubscriptionTier } from '@src/common/enums';
+import { EnterpriseTier } from './enterprise-tier.entity';
 
 @Entity()
 export class Organization {
@@ -13,6 +20,9 @@ export class Organization {
   @Column({ unique: true })
   email: string;
 
+  @Column()
+  apiKey: string;
+
   @Column({ select: false })
   mfASecret: string;
 
@@ -24,6 +34,12 @@ export class Organization {
 
   @OneToMany(() => Cinema, (cinema) => cinema.organization)
   cinemas: Cinema[];
+
+  @OneToOne(
+    () => EnterpriseTier,
+    (enterpriseTier) => enterpriseTier.organization,
+  )
+  enterpriseTier: EnterpriseTier;
 
   constructor(organization: Partial<Organization>) {
     Object.assign(this, organization);

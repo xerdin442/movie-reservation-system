@@ -1,6 +1,6 @@
 export const Secrets = {
   PORT: Number(process.env.PORT),
-  NODE_ENV: process.env.NODE_ENV ?? 'development',
+  NODE_ENV: process.env.NODE_ENV!,
   MYSQL_HOST: process.env.MYSQL_HOST!,
   MYSQL_PORT: Number(process.env.MYSQL_PORT),
   MYSQL_USERNAME: process.env.MYSQL_USERNAME!,
@@ -12,7 +12,6 @@ export const Secrets = {
   REDIS_PASSWORD: process.env.REDIS_PASSWORD!,
   REDIS_URL: process.env.REDIS_URL!,
   QUEUE_STORE_INDEX: Number(process.env.QUEUE_STORE_INDEX),
-  SESSION_STORE_INDEX: Number(process.env.SESSION_STORE_INDEX),
   IDEMPOTENCY_KEYS_STORE_INDEX: Number(
     process.env.IDEMPOTENCY_KEYS_STORE_INDEX,
   ),
@@ -22,7 +21,6 @@ export const Secrets = {
   CLOUD_NAME: process.env.CLOUD_NAME!,
   CLOUD_API_SECRET: process.env.CLOUD_API_SECRET!,
   CLOUD_API_KEY: process.env.CLOUD_API_KEY!,
-  SOCIAL_AUTH_STORE_INDEX: Number(process.env.SOCIAL_AUTH_STORE_INDEX),
   DEFAULT_IMAGE: process.env.DEFAULT_IMAGE!,
   RESEND_EMAIL_API_KEY: process.env.RESEND_EMAIL_API_KEY!,
   APP_NAME: process.env.APP_NAME!,

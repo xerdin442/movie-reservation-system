@@ -1,10 +1,9 @@
-import { createParamDecorator, ExecutionContext } from '@nestjs/common';
-import { JwtValidatedPayload } from '@src/common/types';
-import { Request } from 'express';
-
-interface AuthenticatedRequest extends Request {
-  user: JwtValidatedPayload;
-}
+import {
+  createParamDecorator,
+  ExecutionContext,
+  SetMetadata,
+} from '@nestjs/common';
+import { AuthenticatedRequest, AuthRole } from '@src/common/types';
 
 export const CurrentUser = createParamDecorator(
   (data: unknown, ctx: ExecutionContext) => {
@@ -13,3 +12,6 @@ export const CurrentUser = createParamDecorator(
     return request.user;
   },
 );
+
+export const ROLES_KEY = 'auth_roles';
+export const Roles = (...roles: AuthRole[]) => SetMetadata(ROLES_KEY, roles);

@@ -1,8 +1,4 @@
-export type SessionData = {
-  email?: string;
-  otp?: string;
-  otpExpiration?: number;
-};
+import { Request } from 'express';
 
 export type AuthRole = 'organization' | 'staff' | 'admin';
 
@@ -11,18 +7,9 @@ export interface JwtValidatedPayload {
   role: AuthRole;
 }
 
-export type SocialAuthUser = {
-  // user?: User;
-  token: string;
-  twoFactorAuth?: boolean;
-};
-
-export type SocialAuthPayload = {
-  email: string;
-  firstName: string;
-  lastName: string;
-  profileImage?: string;
-};
+export interface AuthenticatedRequest extends Request {
+  user: JwtValidatedPayload;
+}
 
 export type CloudinaryResourcesResponse = {
   resources: [

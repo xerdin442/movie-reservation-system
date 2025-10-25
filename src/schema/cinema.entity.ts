@@ -21,9 +21,6 @@ export class Cinema {
   name: string;
 
   @Column()
-  apiKey: string;
-
-  @Column()
   accountNumber: string;
 
   @Column()
@@ -39,10 +36,10 @@ export class Cinema {
   membershipPlans: string[];
 
   @Column({ default: false })
-  allowMembership: boolean;
+  enableMembership: boolean;
 
   @Column({ default: false })
-  allowUsdcPayments: boolean;
+  enableUsdcPayments: boolean;
 
   @OneToMany(() => Movie, (movie) => movie.cinema)
   movies: Movie[];
