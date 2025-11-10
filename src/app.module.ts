@@ -8,12 +8,10 @@ import { Secrets } from './common/secrets';
 import { DbModule } from './db/db.module';
 import { CinemaModule } from './cinema/cinema.module';
 import { MovieModule } from './movie/movie.module';
-import { StaffModule } from './staff/staff.module';
 import { OrganizationModule } from './organization/organization.module';
 import { PaymentsModule } from './payments/payments.module';
 import { AuthModule } from './auth/auth.module';
 import { SubscriptionModule } from './subscription/subscription.module';
-import { RolesGuard } from './custom/guards';
 
 @Module({
   imports: [
@@ -42,7 +40,6 @@ import { RolesGuard } from './custom/guards';
     DbModule,
     CinemaModule,
     MovieModule,
-    StaffModule,
     OrganizationModule,
     PaymentsModule,
     AuthModule,
@@ -53,10 +50,6 @@ import { RolesGuard } from './custom/guards';
     {
       provide: APP_GUARD,
       useClass: ThrottlerGuard,
-    },
-    {
-      provide: APP_GUARD,
-      useClass: RolesGuard,
     },
   ],
 })

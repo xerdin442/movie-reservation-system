@@ -1,19 +1,10 @@
-import {
-  Column,
-  Entity,
-  JoinColumn,
-  ManyToOne,
-  OneToMany,
-  PrimaryGeneratedColumn,
-} from 'typeorm';
+import { Column, Entity, ManyToOne, OneToMany } from 'typeorm';
 import { Cinema } from './cinema.entity';
 import { Showtime } from './showtime.entity';
+import { AbstractEntity } from '@src/db/abstract.entity';
 
 @Entity()
-export class Screen {
-  @PrimaryGeneratedColumn()
-  id: number;
-
+export class Screen extends AbstractEntity<Screen> {
   @Column({ unique: true })
   identifier: string;
 
@@ -21,13 +12,8 @@ export class Screen {
   numberOfSeats: number;
 
   @ManyToOne(() => Cinema, (cinema) => cinema.screens, { onDelete: 'CASCADE' })
-  @JoinColumn({ name: 'id' })
   cinema: Cinema;
 
   @OneToMany(() => Showtime, (showtime) => showtime.screen)
   showtimes: Showtime[];
-
-  constructor(screen: Partial<Screen>) {
-    Object.assign(this, screen);
-  }
 }

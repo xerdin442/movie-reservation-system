@@ -1,15 +1,13 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity } from 'typeorm';
 import {
   TransactionMethod,
   TransactionSource,
   TransactionStatus,
 } from '@src/common/enums';
+import { AbstractEntity } from '@src/db/abstract.entity';
 
 @Entity()
-export class Transaction {
-  @PrimaryGeneratedColumn()
-  id: number;
-
+export class Transaction extends AbstractEntity<Transaction> {
   @Column()
   amount: number;
 
@@ -19,6 +17,9 @@ export class Transaction {
   @Column()
   sourceId: number;
 
+  @Column()
+  date: number;
+
   @Column({ type: 'enum', enum: TransactionMethod })
   method: TransactionMethod;
 
@@ -27,8 +28,4 @@ export class Transaction {
 
   @Column({ type: 'enum', enum: TransactionSource })
   source: TransactionSource;
-
-  constructor(transaction: Partial<Transaction>) {
-    Object.assign(this, transaction);
-  }
 }

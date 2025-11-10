@@ -3,7 +3,7 @@ import { PassportStrategy } from '@nestjs/passport';
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { Secrets } from '@src/common/secrets';
 import logger from '@src/common/logger';
-import { AuthRole, JwtValidatedPayload } from '@src/common/types';
+import { AuthRole, AuthenticatedUser } from '@src/common/types';
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
@@ -17,7 +17,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     });
   }
 
-  validate(payload: Record<string, any>): JwtValidatedPayload {
+  validate(payload: Record<string, any>): AuthenticatedUser {
     try {
       // Prompt user to login if token has expired
       const currentTime = Math.floor(Date.now() / 1000);
@@ -29,6 +29,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
 
       return {
         id: payload.sub as number,
+        email: payload.email as string,
         role: payload.role as AuthRole,
       };
     } catch (error) {

@@ -2,12 +2,11 @@ import { Global, Module } from '@nestjs/common';
 import { SubscriptionService } from './subscription.service';
 import { SubscriptionController } from './subscription.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Organization } from '@src/schema/organization.entity';
-import { Cinema } from '@src/schema/cinema.entity';
+import { EnterpriseTier } from '@src/schema/enterprise-tier.entity';
 
 @Global()
 @Module({
-  imports: [TypeOrmModule.forFeature([Organization, Cinema])],
+  imports: [TypeOrmModule.forFeature([EnterpriseTier])],
   providers: [SubscriptionService],
   controllers: [SubscriptionController],
   exports: [SubscriptionService],

@@ -1,18 +1,10 @@
 import { ReservationStatus } from '@src/common/enums';
-import {
-  Column,
-  Entity,
-  JoinColumn,
-  ManyToOne,
-  PrimaryGeneratedColumn,
-} from 'typeorm';
+import { Column, Entity, ManyToOne } from 'typeorm';
 import { Showtime } from './showtime.entity';
+import { AbstractEntity } from '@src/db/abstract.entity';
 
 @Entity()
-export class Reservation {
-  @PrimaryGeneratedColumn()
-  id: number;
-
+export class Reservation extends AbstractEntity<Reservation> {
   @Column()
   email: string;
 
@@ -34,10 +26,5 @@ export class Reservation {
   @ManyToOne(() => Showtime, (showtime) => showtime.reservations, {
     onDelete: 'CASCADE',
   })
-  @JoinColumn({ name: 'id' })
   showtime: Showtime;
-
-  constructor(reservation: Partial<Reservation>) {
-    Object.assign(this, reservation);
-  }
 }

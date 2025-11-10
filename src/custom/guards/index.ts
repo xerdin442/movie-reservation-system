@@ -2,10 +2,13 @@ import {
   CanActivate,
   ExecutionContext,
   ForbiddenException,
+  UnauthorizedException,
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { ROLES_KEY } from '../decorators';
-import { AuthenticatedRequest } from '@src/common/types';
+import { AuthenticatedRequest, AuthenticatedUser } from '@src/common/types';
+import { Request } from 'express';
+import { OrganizationService } from '@src/organization/organization.service';
 
 export class RolesGuard implements CanActivate {
   constructor(private reflector: Reflector) {}
@@ -24,7 +27,7 @@ export class RolesGuard implements CanActivate {
     const { user } = context.switchToHttp().getRequest<AuthenticatedRequest>();
 
     // Check if user's role matches any of the the required roles
-    const hasRole = requiredRoles.includes(user.role);
+    const hasRole = requiredRoles.includes(user.role!);
     if (!hasRole) {
       throw new ForbiddenException(
         'You do not have permission to access this resource',
@@ -35,4 +38,23 @@ export class RolesGuard implements CanActivate {
   }
 }
 
-// apikey guard
+export class ApiKeyGuard implements CanActivate {
+  constructor(private readonly orgService: OrganizationService) {}
+
+  async canActivate(context: ExecutionContext): Promise<boolean> {
+    // Extract API key from request header
+    const request = context.switchToHttp().getRequest<Request>();
+    const apiKey = request.headers['x-api-key'];
+    if (!apiKey) throw new UnauthorizedException('Missing API key');
+
+    // Check if API key is valid
+    const organization = await this.orgService.findByApiKey(apiKey as string);
+    if (!organization) throw new UnauthorizedException('Invalid API key');
+
+    // Populate request object with Organization details
+    const user: AuthenticatedUser = { ...organization };
+    request.user = user;
+
+    return true;
+  }
+}

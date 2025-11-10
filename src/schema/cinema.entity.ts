@@ -1,22 +1,12 @@
-import {
-  Column,
-  Entity,
-  JoinColumn,
-  ManyToOne,
-  OneToMany,
-  PrimaryGeneratedColumn,
-} from 'typeorm';
+import { Column, Entity, ManyToOne, OneToMany } from 'typeorm';
 import { Movie } from './movie.entity';
 import { Screen } from './screen.entity';
-import { Staff } from './staff.entity';
 import { Membership } from './membership.entity';
 import { Organization } from './organization.entity';
+import { AbstractEntity } from '@src/db/abstract.entity';
 
 @Entity()
-export class Cinema {
-  @PrimaryGeneratedColumn()
-  id: number;
-
+export class Cinema extends AbstractEntity<Cinema> {
   @Column()
   name: string;
 
@@ -29,16 +19,19 @@ export class Cinema {
   @Column()
   bankName: string;
 
+  @Column()
+  recipientCode: string;
+
   @Column({ default: 0 })
   balance: number;
 
   @Column({ type: 'simple-array' })
   membershipPlans: string[];
 
-  @Column({ default: false })
+  @Column()
   enableMembership: boolean;
 
-  @Column({ default: false })
+  @Column()
   enableUsdcPayments: boolean;
 
   @OneToMany(() => Movie, (movie) => movie.cinema)
@@ -47,19 +40,11 @@ export class Cinema {
   @OneToMany(() => Screen, (screen) => screen.cinema)
   screens: Screen[];
 
-  @OneToMany(() => Staff, (staff) => staff.cinema)
-  staff: Staff[];
-
   @OneToMany(() => Membership, (membership) => membership.cinema)
   memberships: Membership[];
 
   @ManyToOne(() => Organization, (organization) => organization.cinemas, {
     onDelete: 'CASCADE',
   })
-  @JoinColumn({ name: 'id' })
   organization: Organization;
-
-  constructor(cinema: Partial<Cinema>) {
-    Object.assign(this, cinema);
-  }
 }

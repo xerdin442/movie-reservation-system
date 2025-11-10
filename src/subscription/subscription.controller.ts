@@ -1,4 +1,4 @@
 import { Controller } from '@nestjs/common';
 
-@Controller('subscription')
+@Controller('dashboard/org/subscription')
 export class SubscriptionController {}

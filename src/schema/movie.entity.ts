@@ -1,20 +1,11 @@
 import { MovieGenre, MovieStatus } from '@src/common/enums';
-import {
-  Column,
-  Entity,
-  JoinColumn,
-  ManyToOne,
-  OneToMany,
-  PrimaryGeneratedColumn,
-} from 'typeorm';
+import { Column, Entity, ManyToOne, OneToMany } from 'typeorm';
 import { Cinema } from './cinema.entity';
 import { Showtime } from './showtime.entity';
+import { AbstractEntity } from '@src/db/abstract.entity';
 
 @Entity()
-export class Movie {
-  @PrimaryGeneratedColumn()
-  id: number;
-
+export class Movie extends AbstractEntity<Movie> {
   @Column()
   title: string;
 
@@ -46,13 +37,8 @@ export class Movie {
   status: MovieStatus;
 
   @ManyToOne(() => Cinema, (cinema) => cinema.movies, { onDelete: 'CASCADE' })
-  @JoinColumn({ name: 'id' })
   cinema: Cinema;
 
   @OneToMany(() => Showtime, (showtime) => showtime.movie)
   showtimes: Showtime[];
-
-  constructor(movie: Partial<Movie>) {
-    Object.assign(this, movie);
-  }
 }

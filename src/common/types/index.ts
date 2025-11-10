@@ -1,14 +1,15 @@
 import { Request } from 'express';
 
-export type AuthRole = 'organization' | 'staff' | 'admin';
+export type AuthRole = 'executive' | 'admin' | 'staff';
 
-export interface JwtValidatedPayload {
+export interface AuthenticatedUser {
   id: number;
-  role: AuthRole;
+  email: string;
+  role?: AuthRole;
 }
 
 export interface AuthenticatedRequest extends Request {
-  user: JwtValidatedPayload;
+  user: AuthenticatedUser;
 }
 
 export type CloudinaryResourcesResponse = {

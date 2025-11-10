@@ -1,17 +1,9 @@
-import {
-  Column,
-  Entity,
-  JoinColumn,
-  ManyToOne,
-  PrimaryGeneratedColumn,
-} from 'typeorm';
+import { Column, Entity, ManyToOne } from 'typeorm';
 import { Cinema } from './cinema.entity';
+import { AbstractEntity } from '@src/db/abstract.entity';
 
 @Entity()
-export class Membership {
-  @PrimaryGeneratedColumn()
-  id: number;
-
+export class Membership extends AbstractEntity<Membership> {
   @Column({ unique: true })
   email: string;
 
@@ -27,10 +19,5 @@ export class Membership {
   @ManyToOne(() => Cinema, (cinema) => cinema.memberships, {
     onDelete: 'CASCADE',
   })
-  @JoinColumn({ name: 'id' })
   cinema: Cinema;
-
-  constructor(membership: Partial<Membership>) {
-    Object.assign(this, membership);
-  }
 }

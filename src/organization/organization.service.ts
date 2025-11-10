@@ -18,7 +18,7 @@ import { randomUUID } from 'crypto';
 export class OrganizationService {
   constructor(
     @InjectRepository(Organization)
-    private readonly organizationRepository: Repository<Organization>,
+    private readonly organizationRepo: Repository<Organization>,
     @InjectQueue('organization-queue')
     private readonly organizationQueue: Queue,
     private readonly jwtService: JwtService,
@@ -63,14 +63,14 @@ export class OrganizationService {
       });
 
       // Create new organization
-      const organization = this.organizationRepository.create({
+      const organization = this.organizationRepo.create({
         ...details,
         apiKey: 'mrs_' + randomUUID(),
         mfASecret: secret.base32,
         subscriptionTier: SubscriptionTier.FREE,
         subscriptionStatus: SubscriptionStatus.ACTIVE,
       });
-      await this.organizationRepository.save(organization);
+      await this.organizationRepo.save(organization);
 
       // Create a QRcode image with the generated MFA secret
       const qrcode = await qrCode.toDataURL(secret.otpauth_url as string, {
@@ -94,7 +94,7 @@ export class OrganizationService {
     );
 
     try {
-      const organization = await this.organizationRepository.findOne({
+      const organization = await this.organizationRepo.findOne({
         where: { email: dto.email },
       });
 
@@ -135,7 +135,7 @@ export class OrganizationService {
 
       // Retrieve Organization email from cache using valid request ID
       const email = JSON.parse(data) as string;
-      const organization = await this.organizationRepository.findOneOrFail({
+      const organization = await this.organizationRepo.findOneOrFail({
         where: { email },
       });
 
@@ -151,7 +151,7 @@ export class OrganizationService {
       }
 
       // Create and sign JWT payload
-      const payload = { sub: organization.id, role: 'organization' };
+      const payload = { sub: organization.id, email, role: 'organization' };
       const token = await this.jwtService.signAsync(payload);
 
       return { email, token };
@@ -159,6 +159,14 @@ export class OrganizationService {
       throw error;
     } finally {
       redis.destroy();
+    }
+  }
+
+  async findByApiKey(apiKey: string): Promise<Organization | null> {
+    try {
+      return this.organizationRepo.findOneBy({ apiKey });
+    } catch (error) {
+      throw error;
     }
   }
 }

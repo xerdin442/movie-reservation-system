@@ -38,11 +38,6 @@ export enum MovieStatus {
   ENDED = 'ended',
 }
 
-export enum StaffRole {
-  MANAGER = 'manager',
-  MEMBER = 'member',
-}
-
 export enum TransactionStatus {
   PENDING = 'pending',
   FAILED = 'failed',
@@ -56,11 +51,11 @@ export enum TransactionMethod {
 
 export enum TransactionSource {
   RESERVATION = 'reservation',
-  SUBSRCRIPTION = 'subscription',
+  MEMBERSHIP = 'membership',
 }
 
 export enum ReservationStatus {
-  PENDING = 'pending',
+  ACTIVE = 'active',
   USED = 'used',
   EXPIRED = 'expired',
 }

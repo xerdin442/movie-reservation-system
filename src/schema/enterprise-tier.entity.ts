@@ -1,33 +1,11 @@
-import {
-  Column,
-  Entity,
-  JoinColumn,
-  OneToOne,
-  PrimaryGeneratedColumn,
-} from 'typeorm';
-import { Organization } from './organization.entity';
+import { Column, Entity } from 'typeorm';
+import { AbstractEntity } from '@src/db/abstract.entity';
 
 @Entity()
-export class EnterpriseTier {
-  @PrimaryGeneratedColumn()
-  id: number;
-
-  @Column()
-  staffPerCinema: number;
-
+export class EnterpriseTier extends AbstractEntity<EnterpriseTier> {
   @Column()
   screensPerCinema: number;
 
   @Column()
   cinemasPerOrganization: number;
-
-  @OneToOne(() => Organization, (organization) => organization.enterpriseTier, {
-    onDelete: 'CASCADE',
-  })
-  @JoinColumn({ name: 'id' })
-  organization: Organization;
-
-  constructor(enterpriseTier: Partial<EnterpriseTier>) {
-    Object.assign(this, enterpriseTier);
-  }
 }

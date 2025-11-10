@@ -3,7 +3,7 @@ import logger from '@src/common/logger';
 import { OrganizationService } from './organization.service';
 import { LoginDto, SignupDto, VerifyLoginDto, VerifySignupDto } from './dto';
 
-@Controller('organization')
+@Controller('dashboard/org')
 export class OrganizationController {
   private readonly context: string = OrganizationController.name;
 

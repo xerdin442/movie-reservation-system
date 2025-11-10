@@ -1,19 +1,11 @@
-import {
-  Entity,
-  PrimaryGeneratedColumn,
-  Column,
-  OneToMany,
-  OneToOne,
-} from 'typeorm';
+import { Entity, Column, OneToMany, OneToOne, JoinColumn } from 'typeorm';
 import { Cinema } from './cinema.entity';
 import { SubscriptionStatus, SubscriptionTier } from '@src/common/enums';
 import { EnterpriseTier } from './enterprise-tier.entity';
+import { AbstractEntity } from '@src/db/abstract.entity';
 
 @Entity()
-export class Organization {
-  @PrimaryGeneratedColumn()
-  id: number;
-
+export class Organization extends AbstractEntity<Organization> {
   @Column()
   name: string;
 
@@ -35,13 +27,7 @@ export class Organization {
   @OneToMany(() => Cinema, (cinema) => cinema.organization)
   cinemas: Cinema[];
 
-  @OneToOne(
-    () => EnterpriseTier,
-    (enterpriseTier) => enterpriseTier.organization,
-  )
+  @OneToOne(() => EnterpriseTier, { cascade: true, onDelete: 'CASCADE' })
+  @JoinColumn()
   enterpriseTier: EnterpriseTier;
-
-  constructor(organization: Partial<Organization>) {
-    Object.assign(this, organization);
-  }
 }
