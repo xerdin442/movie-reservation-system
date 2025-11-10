@@ -28,7 +28,7 @@ export class AuthProcessor {
         This code is only valid for the next 10 minutes.`;
 
       // Store the verification code in Redis cache for the next 10mins
-      await redis.setEx(verificationCode, 600, JSON.stringify(email));
+      await redis.setEx(verificationCode, 600, email);
       // Send verification mail to new user
       await sendEmail(email, 'Signup Verification', content);
 

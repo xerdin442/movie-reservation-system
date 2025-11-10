@@ -36,7 +36,7 @@ export class AuthService {
 
   async verifySignup(
     dto: VerifySignupDto,
-  ): Promise<{ qrcode: string; email: string }> {
+  ): Promise<{ qrcode: string; email: string; token: string }> {
     // Initialize Redis connection
     const redis: RedisClientType = await connectToRedis(
       Secrets.REDIS_URL,
@@ -71,7 +71,11 @@ export class AuthService {
         errorCorrectionLevel: 'high',
       });
 
-      return { qrcode, email };
+      // Create and sign JWT payload
+      const payload = { sub: user.id, role: user.role };
+      const token = await this.jwtService.signAsync(payload);
+
+      return { qrcode, email, token };
     } catch (error) {
       throw error;
     } finally {

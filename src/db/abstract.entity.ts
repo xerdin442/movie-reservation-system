@@ -5,7 +5,7 @@ export class AbstractEntity<T> {
   @PrimaryGeneratedColumn()
   id: number;
 
-  constructor(admin: Partial<T>) {
-    Object.assign(this, admin);
+  constructor(entity: Partial<T>) {
+    Object.assign(this, entity);
   }
 }
