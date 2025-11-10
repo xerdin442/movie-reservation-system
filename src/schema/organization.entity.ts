@@ -21,7 +21,11 @@ export class Organization extends AbstractEntity<Organization> {
   @OneToMany(() => Cinema, (cinema) => cinema.organization)
   cinemas: Cinema[];
 
-  @OneToOne(() => EnterpriseTier, { cascade: true, onDelete: 'CASCADE' })
+  @OneToOne(() => EnterpriseTier, {
+    nullable: true,
+    cascade: true,
+    onDelete: 'CASCADE',
+  })
   @JoinColumn()
-  enterpriseTier: EnterpriseTier;
+  enterpriseTier?: EnterpriseTier;
 }

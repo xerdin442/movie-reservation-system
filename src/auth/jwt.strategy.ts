@@ -3,7 +3,8 @@ import { PassportStrategy } from '@nestjs/passport';
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { Secrets } from '@src/common/secrets';
 import logger from '@src/common/logger';
-import { AuthRole, AuthenticatedUser } from '@src/common/types';
+import { AuthenticatedUser } from '@src/common/types';
+import { UserRole } from '@src/db/enums';
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
@@ -29,8 +30,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
 
       return {
         id: payload.sub as number,
-        email: payload.email as string,
-        role: payload.role as AuthRole,
+        role: payload.role as UserRole,
       };
     } catch (error) {
       logger.error(

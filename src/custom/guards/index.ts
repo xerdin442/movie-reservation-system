@@ -49,7 +49,6 @@ export class ApiKeyGuard implements CanActivate {
 
     // Check if API key is valid
     const organization = await this.orgService.findByApiKey(apiKey as string);
-    if (!organization) throw new UnauthorizedException('Invalid API key');
 
     // Populate request object with Organization details
     const user: AuthenticatedUser = { ...organization };

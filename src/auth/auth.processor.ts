@@ -1,0 +1,49 @@
+import { Process, Processor } from '@nestjs/bull';
+import { Injectable } from '@nestjs/common';
+import { sendEmail } from '@src/common/config/mail';
+import { connectToRedis } from '@src/common/config/redis';
+import logger from '@src/common/logger';
+import { Secrets } from '@src/common/secrets';
+import { Job } from 'bull';
+import { RedisClientType } from 'redis';
+
+@Injectable()
+@Processor('auth-queue')
+export class AuthProcessor {
+  private readonly context: string = AuthProcessor.name;
+
+  @Process('signup')
+  async signup(job: Job<Record<string, string>>): Promise<void> {
+    // Initialize Redis connection
+    const redis: RedisClientType = await connectToRedis(
+      Secrets.REDIS_URL,
+      'Signup Verification',
+      Secrets.AUTH_VERIFICATION_STORE_INDEX,
+    );
+
+    try {
+      const { email } = job.data;
+      const verificationCode = `${Math.random() * 10 ** 16}`.slice(3, 9);
+      const content = `Here's the verification code to complete your registration process: ${verificationCode}
+        This code is only valid for the next 10 minutes.`;
+
+      // Store the verification code in Redis cache for the next 10mins
+      await redis.setEx(verificationCode, 600, JSON.stringify(email));
+      // Send verification mail to new user
+      await sendEmail(email, 'Signup Verification', content);
+
+      return;
+    } catch (error) {
+      logger.error(
+        `[${this.context}] An error occured while processing signup verification email. Error: ${error.message}\n`,
+      );
+
+      throw error;
+    } finally {
+      redis.destroy();
+    }
+  }
+
+  @Process('onboarding')
+  async onboarding() {}
+}

@@ -1,11 +1,9 @@
+import { UserRole } from '@src/db/enums';
 import { Request } from 'express';
-
-export type AuthRole = 'executive' | 'admin' | 'staff';
 
 export interface AuthenticatedUser {
   id: number;
-  email: string;
-  role?: AuthRole;
+  role: UserRole;
 }
 
 export interface AuthenticatedRequest extends Request {

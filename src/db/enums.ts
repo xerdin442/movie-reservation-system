@@ -10,7 +10,7 @@ export enum SubscriptionTier {
   ENTERPRISE = 'enterprise',
 }
 
-export enum StaffRole {
+export enum UserRole {
   EXECUTIVE = 'executive',
   ADMIN = 'admin',
   STAFF = 'staff',
