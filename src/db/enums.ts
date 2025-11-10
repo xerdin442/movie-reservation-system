@@ -10,6 +10,12 @@ export enum SubscriptionTier {
   ENTERPRISE = 'enterprise',
 }
 
+export enum StaffRole {
+  EXECUTIVE = 'executive',
+  ADMIN = 'admin',
+  STAFF = 'staff',
+}
+
 export enum MovieGenre {
   ACTION = 'action',
   MYSTERY = 'mystery',

@@ -10,7 +10,7 @@ import { Repository } from 'typeorm';
 import { LoginDto, SignupDto, VerifyLoginDto, VerifySignupDto } from './dto';
 import * as speakeasy from 'speakeasy';
 import * as qrCode from 'qrcode';
-import { SubscriptionStatus, SubscriptionTier } from '@src/common/enums';
+import { SubscriptionStatus, SubscriptionTier } from '@src/db';
 import { JwtService } from '@nestjs/jwt';
 import { randomUUID } from 'crypto';
 

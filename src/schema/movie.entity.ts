@@ -1,4 +1,4 @@
-import { MovieGenre, MovieStatus } from '@src/common/enums';
+import { MovieGenre, MovieStatus } from '@src/db';
 import { Column, Entity, ManyToOne, OneToMany } from 'typeorm';
 import { Cinema } from './cinema.entity';
 import { Showtime } from './showtime.entity';
@@ -16,7 +16,7 @@ export class Movie extends AbstractEntity<Movie> {
   genre: MovieGenre[];
 
   @Column({ nullable: true })
-  trailer: string;
+  trailer?: string;
 
   @Column({ default: 0 })
   rating: number;
@@ -31,7 +31,7 @@ export class Movie extends AbstractEntity<Movie> {
   ticketPrice: number;
 
   @Column({ nullable: true })
-  discountPrice: number;
+  discountPrice?: number;
 
   @Column({ type: 'enum', enum: MovieStatus })
   status: MovieStatus;

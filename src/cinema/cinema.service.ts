@@ -6,7 +6,7 @@ import { Cinema } from '../schema/cinema.entity';
 import { PaymentsService } from '@src/payments/payments.service';
 import { Organization } from '@src/schema/organization.entity';
 import { SubscriptionService } from '@src/subscription/subscription.service';
-import { SubscriptionTier } from '@src/common/enums';
+import { SubscriptionTier } from '@src/db';
 
 @Injectable()
 export class CinemaService {

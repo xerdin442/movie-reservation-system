@@ -1,5 +1,5 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
-import { SubscriptionTier } from '@src/common/enums';
+import { SubscriptionTier } from '@src/db';
 import { Organization } from '@src/schema/organization.entity';
 import { BASIC_TIER, FREE_TIER, PREMIUM_TIER } from './helpers';
 import { EnterpriseTier } from '@src/schema/enterprise-tier.entity';

@@ -3,7 +3,7 @@ import {
   TransactionMethod,
   TransactionSource,
   TransactionStatus,
-} from '@src/common/enums';
+} from '@src/db';
 import { AbstractEntity } from '@src/db/abstract.entity';
 
 @Entity()
@@ -12,7 +12,7 @@ export class Transaction extends AbstractEntity<Transaction> {
   amount: number;
 
   @Column({ nullable: true, unique: true })
-  txIdentifier: string;
+  txIdentifier?: string;
 
   @Column()
   sourceId: number;

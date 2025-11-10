@@ -7,5 +7,8 @@ export class EnterpriseTier extends AbstractEntity<EnterpriseTier> {
   screensPerCinema: number;
 
   @Column()
+  membersPerCinema: number;
+
+  @Column()
   cinemasPerOrganization: number;
 }
