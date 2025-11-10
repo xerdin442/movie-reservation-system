@@ -1,4 +1,4 @@
-import { MovieGenre, MovieStatus } from '@src/db';
+import { MovieGenre, MovieStatus } from '@src/db/enums';
 import { Column, Entity, ManyToOne, OneToMany } from 'typeorm';
 import { Cinema } from './cinema.entity';
 import { Showtime } from './showtime.entity';

@@ -3,7 +3,7 @@ import {
   TransactionMethod,
   TransactionSource,
   TransactionStatus,
-} from '@src/db';
+} from '@src/db/enums';
 import { AbstractEntity } from '@src/db/abstract.entity';
 
 @Entity()

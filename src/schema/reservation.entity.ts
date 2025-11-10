@@ -1,4 +1,4 @@
-import { ReservationStatus } from '@src/db';
+import { ReservationStatus } from '@src/db/enums';
 import { Column, Entity, ManyToOne } from 'typeorm';
 import { Showtime } from './showtime.entity';
 import { AbstractEntity } from '@src/db/abstract.entity';
