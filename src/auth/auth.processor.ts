@@ -22,15 +22,14 @@ export class AuthProcessor {
     );
 
     try {
-      const { email } = job.data;
       const verificationCode = `${Math.random() * 10 ** 16}`.slice(3, 9);
       const content = `Here's the verification code to complete your registration process: ${verificationCode}
         This code is only valid for the next 10 minutes.`;
 
       // Store the verification code in Redis cache for the next 10mins
-      await redis.setEx(verificationCode, 600, email);
+      await redis.setEx(verificationCode, 600, JSON.stringify(job.data));
       // Send verification mail to new user
-      await sendEmail(email, 'Signup Verification', content);
+      await sendEmail(job.data.email, 'Signup Verification', content);
 
       return;
     } catch (error) {

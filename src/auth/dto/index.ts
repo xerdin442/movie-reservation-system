@@ -1,9 +1,15 @@
-import { IsEmail, IsNotEmpty, IsString } from 'class-validator';
+import { IsEmail, IsNotEmpty, IsOptional, IsString } from 'class-validator';
 
-export class InitiateAuthDto {
+export class LoginDto {
   @IsEmail({}, { message: 'Please enter a valid email address' })
   @IsNotEmpty()
   email: string;
+}
+
+export class SignupDto extends LoginDto {
+  @IsString()
+  @IsNotEmpty()
+  name: string;
 }
 
 export class VerifySignupDto {
@@ -18,6 +24,10 @@ export class VerifyLoginDto {
   requestId: string;
 
   @IsString()
-  @IsNotEmpty()
-  token: string;
+  @IsOptional()
+  mfaToken?: string;
+
+  @IsString()
+  @IsOptional()
+  password?: string;
 }

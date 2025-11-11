@@ -9,6 +9,7 @@ import { AuthProcessor } from './auth.processor';
 import { BullModule } from '@nestjs/bull';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from '@src/schema/user.entity';
+import { Organization } from '@src/schema/organization.entity';
 
 @Module({
   imports: [
@@ -20,7 +21,7 @@ import { User } from '@src/schema/user.entity';
     BullModule.registerQueue({
       name: 'auth-queue',
     }),
-    TypeOrmModule.forFeature([User]),
+    TypeOrmModule.forFeature([User, Organization]),
   ],
   providers: [JwtStrategy, AuthService, AuthProcessor],
   controllers: [AuthController],

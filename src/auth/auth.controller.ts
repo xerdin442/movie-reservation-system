@@ -1,7 +1,7 @@
 import { Body, Controller, HttpCode, HttpStatus, Post } from '@nestjs/common';
 import logger from '@src/common/logger';
 import { AuthService } from '@src/auth/auth.service';
-import { VerifySignupDto, VerifyLoginDto, InitiateAuthDto } from './dto';
+import { VerifySignupDto, VerifyLoginDto, LoginDto, SignupDto } from './dto';
 
 @Controller('auth')
 export class AuthController {
@@ -11,9 +11,7 @@ export class AuthController {
 
   @HttpCode(HttpStatus.OK)
   @Post('signup')
-  async initiateSignup(
-    @Body() dto: InitiateAuthDto,
-  ): Promise<{ message: string }> {
+  async initiateSignup(@Body() dto: SignupDto): Promise<{ message: string }> {
     try {
       await this.authService.initiateSignup(dto);
 
@@ -53,7 +51,7 @@ export class AuthController {
   @HttpCode(HttpStatus.OK)
   @Post('login')
   async initiateLogin(
-    @Body() dto: InitiateAuthDto,
+    @Body() dto: LoginDto,
   ): Promise<{ requestId: string; role: string }> {
     try {
       const { requestId, role } = await this.authService.initiateLogin(dto);

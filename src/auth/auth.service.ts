@@ -5,14 +5,16 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { User } from '@src/schema/user.entity';
 import { Queue } from 'bull';
 import { EntityManager, Repository } from 'typeorm';
-import { InitiateAuthDto, VerifyLoginDto, VerifySignupDto } from './dto';
+import { SignupDto, LoginDto, VerifyLoginDto, VerifySignupDto } from './dto';
 import { connectToRedis } from '@src/common/config/redis';
 import { Secrets } from '@src/common/secrets';
 import { RedisClientType } from 'redis';
 import * as speakeasy from 'speakeasy';
 import * as qrCode from 'qrcode';
-import { UserRole } from '@src/db/enums';
+import { SubscriptionStatus, SubscriptionTier, UserRole } from '@src/db/enums';
 import { randomUUID } from 'crypto';
+import { Organization } from '@src/schema/organization.entity';
+import * as argon from 'argon2';
 
 @Injectable()
 export class AuthService {
@@ -23,7 +25,7 @@ export class AuthService {
     private readonly jwtService: JwtService,
   ) {}
 
-  async initiateSignup(dto: InitiateAuthDto): Promise<void> {
+  async initiateSignup(dto: SignupDto): Promise<void> {
     try {
       // Send verification email to new user
       await this.authQueue.add('signup', dto);
@@ -51,19 +53,31 @@ export class AuthService {
       }
 
       // Retrieve email using valid verification code
-      const email = JSON.parse(verificationCode) as string;
+      const { name, email } = JSON.parse(verificationCode) as {
+        name: string;
+        email: string;
+      };
 
       // Generate MFA secret
       const secret = speakeasy.generateSecret({
         name: `${Secrets.APP_NAME}:${email}`,
       });
 
-      // Create new Executive
+      // Create new executive user and organization profile
+      const organization = new Organization({
+        name,
+        apiKey: 'key_' + randomUUID().split('-').slice(1).join(''),
+        subscriptionTier: SubscriptionTier.FREE,
+        subscriptionStatus: SubscriptionStatus.ACTIVE,
+      });
+
       const user = new User({
         email,
         mfaSecret: secret.base32,
         role: UserRole.EXECUTIVE,
+        organization,
       });
+
       await this.entityManager.save(user);
 
       // Create a QRcode image with the generated MFA secret
@@ -84,7 +98,7 @@ export class AuthService {
   }
 
   async initiateLogin(
-    dto: InitiateAuthDto,
+    dto: LoginDto,
   ): Promise<{ requestId: string; role: UserRole }> {
     // Initialize Redis connection
     const redis: RedisClientType = await connectToRedis(
@@ -138,10 +152,16 @@ export class AuthService {
       });
 
       if (user.role === UserRole.EXECUTIVE) {
+        if (!dto.mfaToken) {
+          throw new BadRequestException(
+            'MFA token required to login user with Executive role.',
+          );
+        }
+
         // Check if MFA token is valid
         const isValidToken = speakeasy.totp.verify({
           secret: user.mfaSecret!,
-          token: dto.token,
+          token: dto.mfaToken,
           encoding: 'base32',
         });
 
@@ -149,7 +169,17 @@ export class AuthService {
           throw new BadRequestException('Invalid MFA token. Please try again');
         }
       } else {
-        // Verify staff password
+        if (!dto.password) {
+          throw new BadRequestException(
+            'Password required to login user with Admin or Staff role.',
+          );
+        }
+
+        // Check if password is valid
+        const checkPassword = await argon.verify(user.password!, dto.password);
+        if (!checkPassword) {
+          throw new BadRequestException('Invalid password. Please try again');
+        }
       }
 
       // Create and sign JWT payload
